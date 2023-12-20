@@ -1,0 +1,7 @@
+---
+- hosts: proxmox-primary
+  become: true
+  tasks:
+    - block:
+        - import_role:
+            name: cloud-init
