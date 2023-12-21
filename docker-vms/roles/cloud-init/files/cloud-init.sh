@@ -1,10 +1,10 @@
 #!/bin/bash
 # https://technotim.live/posts/cloud-init-cloud-image/
 UBUNTU_CLOUD_INIT_IMAGE_PATH=$1
-VI_ID=9000
+VI_ID=9999
 DEFAULT_MEMEORY_MB=2048
 DEFAULT_CORES=2
-PVE_STORAGE_TARGET=pve-nvme0
+PVE_STORAGE_TARGET=pve-nvme
 CONTAINER_NAME=ubuntu-2204-cloud
 
 set -e

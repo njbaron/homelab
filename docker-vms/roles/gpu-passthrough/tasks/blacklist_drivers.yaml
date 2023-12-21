@@ -1,0 +1,29 @@
+---
+- name: Allow unsafe interrupts
+  ansible.builtin.lineinfile:
+    path: /etc/modprobe.d/iommu_unsafe_interrupts.conf
+    line: "options vfio_iommu_type1 allow_unsafe_interrupts=1"
+    state: present
+    create: true
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add kvm options
+  ansible.builtin.lineinfile:
+    path: /etc/modprobe.d/kvm.conf
+    line: "options kvm ignore_msrs=1"
+    state: present
+    create: true
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Blacklist the nouveau and nvidia driver module
+  community.general.kernel_blacklist:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - nouveau
+    - nvidia
+    - amdgpu

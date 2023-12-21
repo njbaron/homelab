@@ -1,0 +1,2 @@
+[proxmox-primary]
+10.0.0.13   ansible_user=root

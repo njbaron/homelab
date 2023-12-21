@@ -1,0 +1,52 @@
+---
+- name: Check bios or efi
+  ansible.builtin.shell:
+    cmd: "[ -d /sys/firmware/efi ] && echo UEFI || echo BIOS"
+  register: bios_type
+  changed_when: bios_type.rc != 0
+
+- name: Print the bios version
+  ansible.builtin.debug:
+    msg: "{{ bios_type.stdout }}"
+
+- name: Print the processor version
+  ansible.builtin.debug:
+    msg: "{{ ansible_processor[1] }}"
+
+- name: Enable iommu bios mode intel
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+    line: GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on"
+    backup: true
+  when: ansible_processor[1] == "GenuineIntel" and bios_type.stdout == "BIOS"
+  notify: Update grub
+
+- name: Enable iommu bios mode amd
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+    line: GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on"
+    backup: true
+  when: ansible_processor[1] == "AuthenticAMD" and bios_type.stdout == "BIOS"
+  notify: Update grub
+
+- name: Enable iommu uefi mode intel
+  ansible.builtin.script:
+    cmd: add_arg_one_line.py /etc/kernel/cmdline intel_iommu on --backup
+    executable: python3
+  register: intel_output
+  when: ansible_processor[1] == "GenuineIntel" and bios_type.stdout == "UEFI"
+  changed_when: intel_output.stdout == "changed"
+  failed_when: intel_output.rc != 0
+  notify: Update proxmox boot
+
+- name: Enable iommu uefi mode amd
+  ansible.builtin.script:
+    cmd: add_arg_one_line.py /etc/kernel/cmdline amd_iommu on --backup
+    executable: python3
+  register: amd_output
+  when: ansible_processor[1] == "AuthenticAMD" and bios_type.stdout == "UEFI"
+  changed_when: amd_output.stdout == "changed"
+  failed_when: amd_output.rc != 0
+  notify: Update proxmox boot

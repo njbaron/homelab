@@ -1,0 +1,23 @@
+---
+- name: Get gpi pcie id
+  ansible.builtin.script:
+    cmd: get_gpu_pcie_id.sh
+  register: pcie_id
+  failed_when: false
+  changed_when: false
+
+- name: Print pcie id
+  ansible.builtin.debug:
+    msg: "{{ pcie_id.stdout | trim }}"
+
+- name: Disable video from the gpu from the host system
+  ansible.builtin.lineinfile:
+    path: /etc/modprobe.d/vfio.conf
+    line: "options vfio-pci ids={{ pcie_id.stdout | trim }} disable_vga=1"
+    state: present
+    create: true
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Update ramfs
+  when: pcie_id.stdout

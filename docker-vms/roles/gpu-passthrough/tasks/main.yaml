@@ -1,0 +1,12 @@
+---
+- name: Enable iommu
+  ansible.builtin.include_tasks: enable_iommu.yaml
+
+- name: Load VFIO files
+  ansible.builtin.include_tasks: load_vfio.yaml
+
+- name: Blacklist graphics drivers
+  ansible.builtin.include_tasks: blacklist_drivers.yaml
+
+- name: Configure gpu passthrough
+  ansible.builtin.include_tasks: config_gpu.yaml

@@ -1,0 +1,25 @@
+---
+- name: Update grub
+  ansible.builtin.command: update-grub
+  register: update_grub_output
+  failed_when: update_grub_output.rc != 0
+  changed_when: update_grub_output.stdout != ""
+  notify: Reboot
+
+- name: Update proxmox boot
+  ansible.builtin.command: proxmox-boot-tool refresh
+  register: update_proxmox_output
+  failed_when: update_proxmox_output.rc != 0
+  changed_when: update_proxmox_output.stdout != ""
+  notify: Reboot
+
+- name: Update ramfs
+  ansible.builtin.command: update-initramfs -u -k all
+  register: update_ramfs
+  failed_when: update_ramfs.rc != 0
+  changed_when: update_ramfs.stdout != ""
+  notify: Reboot
+
+- name: Reboot
+  ansible.builtin.reboot:
+    reboot_timeout: 3600

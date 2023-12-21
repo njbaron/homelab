@@ -1,0 +1,6 @@
+---
+- name: "Install a ubuntu cloud init vm template"
+  hosts: proxmox-primary
+  become: true
+  roles:
+    - cloud-init

@@ -1,9 +1,13 @@
+---
 - name: Download the ubuntu image
   ansible.builtin.get_url:
     url: https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img
     dest: ~/ubuntu-22.04-server-cloudimg-amd64.img
     checksum: sha256:6d6af17f28c895d87e29092725370387c5e19efe57e58b96dc574feed4245f89
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Run the cloud init script
   ansible.builtin.script:
-    cmd: 00-install-cloud-init.sh ~/ubuntu-22.04-server-cloudimg-amd64.img
+    cmd: cloud-init.sh ~/ubuntu-22.04-server-cloudimg-amd64.img

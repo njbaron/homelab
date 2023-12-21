@@ -1,0 +1,6 @@
+---
+- name: Enable proxmox gpu passthrough
+  hosts: proxmox-cluster
+  become: true
+  roles:
+    - gpu-passthrough

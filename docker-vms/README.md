@@ -2,11 +2,24 @@
 
 ## My plan
 
-1. Create a ubuntu cloud init instance on proxmox
+1. Install proxmox and run the helper scripts
+   1. https://tteck.github.io/Proxmox/
+2. Create nbaron user and secure proxmox ssh
+3. Create a ubuntu cloud init instance on proxmox
    1. https://www.youtube.com/watch?v=shiIi38cJe4
    2. https://technotim.live/posts/cloud-init-cloud-image/
    3. https://cloud-images.ubuntu.com/releases/
-2. 
+4. Enable gpu passthrough on the proxmox host
+   1. https://www.youtube.com/watch?v=_hOBAGKLQkI
+   2. https://drive.google.com/file/d/1rPTKi_b7EFqKTMylH64b3Dg9W0N_XIhO/view
+   3. I am using a minisforum um480xt so pve panics and kills itself with these guides. Now I will try
+      1. https://github.com/isc30/ryzen-7000-series-proxmox
+      2. Ran into issue: "failed command: WRITE FPDMA QUEUED"
+         1. https://unix.stackexchange.com/questions/623238/root-causes-for-failed-command-write-fpdma-queued
+         2. https://bugzilla.kernel.org/show_bug.cgi?id=203475#c14
+         3. I did add: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash libata.force=noncq" to etc/default/grub
+   4. and it is still not working. the file system ends up going read only. I have a sata cable on the way.
+5. 
 
 
 # Things that I used as research for this plan.
