@@ -1,0 +1,81 @@
+---
+- name: Install Docker
+  hosts: all
+  become: true
+
+  handlers:
+    - name: Check docker
+      community.docker.docker_container:
+        name: hello-world
+        image: hello-world
+        detach: false
+
+  tasks:
+    - name: Install docker repository dependencies from apt.
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - software-properties-common
+        update_cache: true
+      when: ansible_pkg_mgr == "apt"
+
+    - name: Add docker key to keychain
+      when: ansible_pkg_mgr == "apt"
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/{{ ansible_lsb.id | lower }}/gpg
+        keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+
+
+    - name: Add docker repository to apt.
+      when: ansible_pkg_mgr == "apt"
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch={{ docker_arch[ansible_architecture] }}
+          signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+          https://download.docker.com/linux/{{ ansible_lsb.id | lower }} {{
+          ansible_distribution_release | lower }} stable
+        state: present
+        filename: docker
+
+      vars:
+        docker_arch:
+          aarch64: arm64
+          x86_64: amd64
+
+    - name: Install docker components from apt
+      when: ansible_pkg_mgr == "apt"
+      ansible.builtin.apt:
+        name:
+          - containerd.io
+          - docker-ce
+          - docker-ce-cli
+          - docker-compose-plugin
+          - python3
+          - python3-pip
+          - python3-docker
+        update_cache: true
+      notify: Check docker
+
+    - name: Ensure docker is enabled at startup.
+      ansible.builtin.service:
+        name: "{{ item.name }}"
+        state: started
+        enabled: true
+      with_items:
+        - name: docker.service
+        - name: containerd.service
+
+    - name: Ensure docker group exists.
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Ensure current user is in docker group.
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: true
+      notify: Check docker

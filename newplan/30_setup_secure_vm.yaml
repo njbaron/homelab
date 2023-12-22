@@ -1,0 +1,6 @@
+---
+- name: Setup Secure VM machine
+  hosts: virtual-machines
+  roles:
+    - qemu-agent
+    # - harden-ssh

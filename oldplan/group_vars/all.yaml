@@ -1,0 +1,6 @@
+---
+user: nbaron
+user_groups:
+  - admin
+disable_sudo_pwd: false
+homelab_key: homelab_key.pub

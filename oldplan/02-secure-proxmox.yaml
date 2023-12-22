@@ -1,0 +1,7 @@
+---
+- name: Harden proxmox to the outside
+  hosts: proxmox-cluster
+  become: true
+  roles:
+    - create-admin-user
+    # - harden-ssh

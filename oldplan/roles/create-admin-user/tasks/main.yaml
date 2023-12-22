@@ -1,0 +1,31 @@
+---
+- name: Ensure group exists
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ (user_groups + [user]) }}"
+
+- name: Add the user and attach their groups
+  ansible.builtin.user:
+    name: "{{ user }}"
+    group: "{{ user }}"
+    groups: "{{ user_groups }}"
+    password: $6$q6x1.YNRMffmt91n$8BfRyvG1lrLx1jK4Kw9xBVWvnx9OCbwcSW.RFfAJnEMAre5pEjcGpgiWyUS9R3TMiIVSw.T5UOO3jayc/Ybdd/
+    update_password: on_create
+    create_home: true
+    shell: /bin/bash
+    home: "/home/{{ user }}"
+    state: absent
+
+- name: "Allow admin users to sudo without a password"
+  ansible.builtin.lineinfile:
+    dest: "/etc/sudoers" # path: in version 2.3
+    state: "present"
+    regexp: "^%admin"
+    line: "%admin ALL=(ALL) NOPASSWD: ALL"
+  when: disable_sudo_pwd
+
+# - name: "Add authorized keys"
+#   ansible.posix.authorized_key:
+#     user: "{{ user }}"
+#     key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/' + homelab_key) }}"

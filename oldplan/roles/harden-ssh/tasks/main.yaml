@@ -1,0 +1,23 @@
+---
+- name: Setup sshd_config
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '{{ item.reg }}'
+    line: "{{ item.line }}"
+    state: present
+    backup: true
+  notify:
+    - Restart ssh
+  loop:
+    - { reg: '^PermitRootLogin', line: 'PermitRootLogin no' }
+    - { reg: '^MaxAuthTries', line: 'MaxAuthTries 3' }
+    - { reg: '^LoginGraceTime', line: 'LoginGraceTime 20' }
+    - { reg: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
+    - { reg: '^PermitEmptyPasswords', line: 'PermitEmptyPasswords no' }
+    - { reg: '^ChallengeResponseAuthentication', line: 'ChallengeResponseAuthentication no' }
+    - { reg: '^KerberosAuthentication', line: 'KerberosAuthentication no' }
+    - { reg: '^X11Forwarding', line: 'X11Forwarding no' }
+    - { reg: '^PermitUserEnvironment', line: 'PermitUserEnvironment no' }
+    - { reg: '^AllowAgentForwarding', line: 'AllowAgentForwarding no' }
+    - { reg: '^AllowTcpForwarding', line: 'AllowTcpForwarding no' }
+    - { reg: '^PermitTunnel', line: 'PermitTunnel no' }

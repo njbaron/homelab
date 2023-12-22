@@ -2,27 +2,33 @@
 
 ## My plan
 
-1. Install proxmox and run the helper scripts
+1. Install proxmox and run post install scripts
    1. https://tteck.github.io/Proxmox/
-2. Create nbaron user and secure proxmox ssh
-3. Create a ubuntu cloud init instance on proxmox
-   1. https://www.youtube.com/watch?v=shiIi38cJe4
-   2. https://technotim.live/posts/cloud-init-cloud-image/
-   3. https://cloud-images.ubuntu.com/releases/
-4. Enable gpu passthrough on the proxmox host
-   1. https://www.youtube.com/watch?v=_hOBAGKLQkI
-   2. https://drive.google.com/file/d/1rPTKi_b7EFqKTMylH64b3Dg9W0N_XIhO/view
-   3. I am using a minisforum um480xt so pve panics and kills itself with these guides. Now I will try
-      1. https://github.com/isc30/ryzen-7000-series-proxmox
-      2. Ran into issue: "failed command: WRITE FPDMA QUEUED"
-         1. https://unix.stackexchange.com/questions/623238/root-causes-for-failed-command-write-fpdma-queued
-         2. https://bugzilla.kernel.org/show_bug.cgi?id=203475#c14
-         3. I did add: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash libata.force=noncq" to etc/default/grub
-   4. and it is still not working. the file system ends up going read only. I have a sata cable on the way.
-5. 
+      1. Post install script
+      2. Proxmox VE Processor Microcode
+      3. Ubuntu 22.04 VM
+2. Deploy a new vm from the proxmox gui
+3. Setup the host
+   1. Update the host
+   2. Enable QEMU guest agent (ensure to enable in proxmox ui too)
+   3. Harden SSH
+   4. Install Docker
+   5. Setup Unattended upgrade
+   6. Setup Uncomplicated Firewall
+   7. Setup Fail to Ban/Crowd Sec
+   8. Setup AppArmor?
+4. Deploy Docker Apps
+   1. ...
 
 
 # Things that I used as research for this plan.
+
+# Maybe to deploy VMs we might play with Terraform and Packer
+https://www.youtube.com/watch?v=1nf3WOEFq1Y
+https://www.youtube.com/watch?v=dvyeoDBUtsU
+
+## Harden ssh
+https://www.digitalocean.com/community/tutorials/how-to-harden-openssh-on-ubuntu-20-04
 
 ## How to protect Linux from Hackers // My server security strategy!
 https://www.youtube.com/watch?v=Bx_HkLVBz9M
@@ -45,7 +51,7 @@ https://www.youtube.com/watch?v=Bx_HkLVBz9M
 
 ### Network security
 
-1. use a firewall - "uncomplicatedfirewall"
+1. use a firewall - "uncomplicated firewall"
     - Does not apply by default to docker containers
 
 ### Reverse proxy
@@ -88,7 +94,7 @@ https://www.youtube.com/watch?v=Cs8yOmTJNYQ
 
 3. Ensure you are using a supported os
    1. supported and not EOL
-   2. least privielge possible
+   2. least privileges possible
    3. application firewall
 
 4. Containers

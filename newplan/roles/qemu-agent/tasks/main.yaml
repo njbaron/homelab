@@ -1,0 +1,14 @@
+---
+- name: Install qemu-guest-agent
+  ansible.builtin.package:
+    name:
+      - qemu-guest-agent
+    state: present
+
+- name: Ensure docker is enabled at startup.
+  ansible.builtin.service:
+    name: "{{ item.name }}"
+    state: started
+    enabled: true
+  with_items:
+    - name: qemu-guest-agent.service
