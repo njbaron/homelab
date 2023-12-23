@@ -1,6 +1,10 @@
 ---
 - name: Setup Secure VM machine
   hosts: virtual-machines
+  become: true
   roles:
+    - updated
     - qemu-agent
-    # - harden-ssh
+    - ssh-hardened
+    - unattended-upgrade
+    - uncomplicated-firewall

@@ -10,20 +10,27 @@
 2. Deploy a new vm from the proxmox gui
 3. Setup the host
    1. Update the host
-   2. Enable QEMU guest agent (ensure to enable in proxmox ui too)
+   2. Enable QEMU guest agent
    3. Harden SSH
-   4. Install Docker
-   5. Setup Unattended upgrade
-   6. Setup Uncomplicated Firewall
-   7. Setup Fail to Ban/Crowd Sec
-   8. Setup AppArmor?
+   4. Setup Unattended upgrade
+      1. https://www.linuxcapable.com/how-to-configure-unattended-upgrades-on-ubuntu-linux/
+      2. https://wiki.debian.org/UnattendedUpgrades
+   5. Setup Uncomplicated Firewall
+      1. https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-22-04
+      2. https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
+   6. Setup Fail to Ban
+   7. Setup AppArmor?
+   8. Install Docker
 4. Deploy Docker Apps
    1. ...
 
 
 # Things that I used as research for this plan.
 
-# Maybe to deploy VMs we might play with Terraform and Packer
+## Crowdsec
+https://www.crowdsec.net/blog/tutorial-crowdsec-v1-1
+
+## Maybe to deploy VMs we might play with Terraform and Packer
 https://www.youtube.com/watch?v=1nf3WOEFq1Y
 https://www.youtube.com/watch?v=dvyeoDBUtsU
 

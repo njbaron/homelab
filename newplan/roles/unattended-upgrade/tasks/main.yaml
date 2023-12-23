@@ -1,0 +1,30 @@
+---
+- name: Install unattended-upgrades
+  ansible.builtin.apt:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    update_cache: true
+    state: present
+
+- name: Ensure unattended-upgrades is enabled at startup
+  ansible.builtin.service:
+    name: unattended-upgrades
+    state: started
+    enabled: true
+
+- name: Setup unattended-upgrades
+  ansible.builtin.lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '{{ item.reg }}'
+    line: "{{ item.line }}"
+    state: present
+    backup: true
+  notify:
+    - Restart unattended-upgrades
+  loop:
+    - { reg: '^Unattended-Upgrade::Remove-Unused-Kernel-Packages', line: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";' }
+    - { reg: '^Unattended-Upgrade::Remove-New-Unused-Dependencies', line: 'Unattended-Upgrade::Remove-New-Unused-Dependencies "true";' }
+    - { reg: '^Unattended-Upgrade::Remove-Unused-Dependencies', line: 'Unattended-Upgrade::Remove-Unused-Dependencies "false";' }
+    - { reg: '^Unattended-Upgrade::Automatic-Reboot ', line: 'Unattended-Upgrade::Automatic-Reboot "false";' }
+    - { reg: '^Unattended-Upgrade::Automatic-Reboot-Time ', line: 'Unattended-Upgrade::Automatic-Reboot-Time "02:00";' }

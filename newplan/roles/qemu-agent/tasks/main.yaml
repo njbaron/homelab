@@ -5,10 +5,8 @@
       - qemu-guest-agent
     state: present
 
-- name: Ensure docker is enabled at startup.
+- name: Ensure qemu-guest-agent is enabled at startup
   ansible.builtin.service:
-    name: "{{ item.name }}"
+    name: qemu-guest-agent
     state: started
     enabled: true
-  with_items:
-    - name: qemu-guest-agent.service

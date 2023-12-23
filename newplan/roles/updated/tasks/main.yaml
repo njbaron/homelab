@@ -1,0 +1,10 @@
+---
+- name: Update Debian-based Systems
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+  notify: Reboot
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  ansible.builtin.meta: flush_handlers
