@@ -45,7 +45,7 @@
       - python3-docker
     update_cache: true
 
-- name: Ensure docker is enabled at startup.
+- name: Ensure docker is enabled at startup
   ansible.builtin.service:
     name: "{{ item.name }}"
     state: started
@@ -54,13 +54,14 @@
     - name: docker.service
     - name: containerd.service
 
-- name: Ensure docker group exists.
+- name: Ensure docker group exists
   ansible.builtin.group:
     name: docker
     state: present
 
-- name: Ensure current user is in docker group.
+- name: Ensure user in docker group user {{ ansible_user_id }}
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     groups: docker
     append: true
+  become: false

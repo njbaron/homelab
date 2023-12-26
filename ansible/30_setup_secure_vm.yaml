@@ -8,3 +8,5 @@
     - ssh-hardened
     - unattended-upgrade
     - uncomplicated-firewall
+    - crowdsec-agent
+    - docker-host

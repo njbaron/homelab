@@ -18,9 +18,10 @@
    5. Setup Uncomplicated Firewall
       1. https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-22-04
       2. https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
-   6. Setup Fail to Ban
-   7. Setup AppArmor?
-   8. Install Docker
+   6. Setup Crowdsec
+      1. https://docs.crowdsec.net/docs/getting_started/install_crowdsec/
+      2. https://github.com/alf149/ansible-role-crowdsec
+   7. Install Docker
 4. Deploy Docker Apps
    1. ...
 

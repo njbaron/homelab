@@ -1,0 +1,18 @@
+---
+- name: Crowdsec Add GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://packagecloud.io/crowdsec/crowdsec/gpgkey
+    state: present
+
+- name: Crowdsec Add Repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://packagecloud.io/crowdsec/crowdsec/{{ ansible_distribution | lower  }} {{ ansible_distribution_release | lower }} main"
+    state: present
+
+- name: Apt update and install Crowdsec
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - crowdsec
+      - crowdsec-firewall-bouncer-iptables
+    state: present

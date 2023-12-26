@@ -1,0 +1,5 @@
+[virtual-machines]
+vm-hostname0
+
+[raspbian-machines]
+rpi-hostname-0
