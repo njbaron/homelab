@@ -1,0 +1,23 @@
+---
+# tasks file for formatting /dev/sdb for Longhorn
+- name: Add disk to longhorn
+  hosts: longhorn-disk
+  become: true
+  tasks:
+    - name: Create a new partitin on the device
+      community.general.parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+
+    - name: Create a ext4 filesystem on the partition
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/sdb1
+
+    - name: Mound the partition
+      ansible.posix.mount:
+        fstype: ext4
+        src: /dev/sdb1
+        path: /mnt/sdb1
+        state: mounted

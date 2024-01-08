@@ -22,8 +22,6 @@
       1. https://docs.crowdsec.net/docs/getting_started/install_crowdsec/
       2. https://github.com/alf149/ansible-role-crowdsec
    7. Install Docker
-4. Deploy Docker Apps
-   1. ...
 
 
 # Things that I used as research for this plan.

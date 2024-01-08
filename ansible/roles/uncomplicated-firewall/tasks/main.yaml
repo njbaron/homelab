@@ -1,5 +1,5 @@
 ---
-- name: Install unattended-upgrades
+- name: Install uncomplicated-firewall
   ansible.builtin.apt:
     name:
       - ufw
@@ -21,6 +21,6 @@
     rule: allow
     direction: out
 
-- name: Enable UFW
+- name: Disable UFW
   community.general.ufw:
-    state: enabled
+    state: disabled

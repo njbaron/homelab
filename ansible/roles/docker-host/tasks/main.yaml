@@ -59,9 +59,8 @@
     name: docker
     state: present
 
-- name: Ensure user in docker group user {{ ansible_user_id }}
+- name: Ensure user in docker group user nbaron
   ansible.builtin.user:
-    name: "{{ ansible_user_id }}"
+    name: nbaron
     groups: docker
     append: true
-  become: false
